@@ -19,7 +19,7 @@ impl BoxedFunction {
 macro_rules! zip {
     ($x: expr) => ($x);
     ($x: expr, $($y: expr), +) => (
-        $x.clone().iter().zip(
+        $x.iter().zip(
             zip!($($y), +))
     )
 }
@@ -32,9 +32,6 @@ fn main() {
     let _path1win = r"C:\Users\admin\Desktop\MTHOMAS\x\model26zmienny\ptau.csv";
     let _path2win =
         r"C:\Users\admin\Desktop\MTHOMAS\x\model26zmienny\stezenia.csv";
-
-    let mut h;
-    let mut t = 0.0;
 
     //stałe
     let mut km = [0.0; 31];
@@ -390,15 +387,17 @@ fn main() {
         .expect("stdin failed - stezenie poczatkowe");
 
     //stezenia
-    let mut conc = [10.0_f64.powf(-8.0); 27];
+    let mut h;
+    let mut t = 0.0;
+    let mut conc = [0.0*10.0_f64.powf(-8.0); 27];
     conc[4] = c_cu_poczatkowe.trim_end().parse::<f64>().unwrap()
         * 10.0_f64.powf(-6.0);
     println!(
         "...c_cu = {}",
         c_cu_poczatkowe.trim_end().parse::<f64>().unwrap()
     );
-    conc[2] = 0.34;
-    conc[3] = 0.045;
+    conc[2] = 0.25;
+    conc[3] = 0.025;
     conc[5] = 0.025;
     //conc[25] = 10.0_f64.powf(-8.0);
 
@@ -422,15 +421,16 @@ fn main() {
         .write_all("t,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,c24,c25,c26\n".as_bytes())
         .expect("tragedia stezenia");
     let zapisy_na_sekunde = 10.0;
+    
 
     //let mut switch = true;
     while t < 10000.0 {
-        if t < 8.0 * 10.0_f64.powf(-3.0) {
+        if t < 5.0 * 10.0_f64.powf(0.0) {
             h = 10.0_f64.powf(-8.0)
         } else if t < 10_f64.powf(2.0) {
             h = 10.0_f64.powf(-7.0)
         } else {
-            h = 10.0_f64.powf(-6.0)
+            h = 10.0_f64.powf(-7.0)
         }
         t += h;
         // if t > 2400.0 && switch {
