@@ -49,7 +49,7 @@ impl ode_solvers::System<State> for Oscillator {
         + self.km20 * c[11] * c[19] /*M20*/
         + self.km22 * c[20] * c[11] /*M22*/
         - self.km26  * c[1] * c[23] * c[23] /*M26*/
-        + self.km29 * c[2] * c[25]; /*M29*/;
+        + self.km29 * c[2] * c[25]; /*M29*/
         dc[1] = - self.km1 * c[1] * c[2] * c[3] /*M1*/
         + km_2 * c[4] /*M2*/
         + self.km20 * c[11] * c[19] /*M20*/
@@ -241,7 +241,7 @@ fn main() {
     conc[5] = 0.025;
     let c0 = State::from(conc);
 
-    let mut stepper = Dop853::from_param(system, 0.0, 10000.0, 1.0, c0, 1.0e-14, 1.0e-14, 0.9, 0.0, 0.333,6.0,0.001,10.0_f64.powf(-11.0),10_u32.pow(9),1000,ode_solvers::dop_shared::OutputType::Dense);
+    let mut stepper = Dop853::from_param(system, 0.0, 1000.0, 1.0, c0, 1.0e-14, 1.0e-14, 0.9, 0.0, 0.333,6.0,0.001,10.0_f64.powf(-11.0),10_u32.pow(9),1000,ode_solvers::dop_shared::OutputType::Dense);
     let res = stepper.integrate();
 
     let path2win = r"C:\Users\admin\Desktop\MTHOMAS\x\model26zmienny\stezenia.csv";
@@ -259,9 +259,8 @@ fn main() {
     // Handle result
     match res {
         Ok(stats) => {
-            println!("{stats}");
             stezenia_plik
-            .write_all(format!("{}", stats).as_bytes())
+            .write_all(format!("{:?}", stepper.x_out()).as_bytes())
             .expect("tragedia stezenia");
 
             // Do something with the output...
